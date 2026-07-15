@@ -375,6 +375,7 @@ export function parseManualText(rawText) {
     if (baselineIndent === null) baselineIndent = 0;
 
     let currentItem = null;
+    let activeSubtitle = null;
 
     section.rawLines.forEach(line => {
       const trimmed = line.trim();
@@ -391,6 +392,9 @@ export function parseManualText(rawText) {
       if (timeMatch) {
         if (currentItem) {
           currentItem.checkpoint = trimmed;
+        }
+        if (activeSubtitle) {
+          activeSubtitle.checkpoint = trimmed;
         }
         currentItem = null;
         return;
@@ -421,6 +425,9 @@ export function parseManualText(rawText) {
           } else {
             currentItem = { text: cleanText, type: itemType, subItems: [], indent: leadingSpaces };
             section.items.push(currentItem);
+            if (itemType === 'subtitle') {
+              activeSubtitle = currentItem;
+            }
           }
         } else {
           // Bulleted description lines are treated as sub-items under the active exercise
@@ -444,6 +451,7 @@ export function parseManualText(rawText) {
           const cleanSubtitle = trimmed.replace(/^#\s*/, '');
           currentItem = { text: cleanSubtitle, type: 'subtitle', subItems: [], indent: leadingSpaces };
           section.items.push(currentItem);
+          activeSubtitle = currentItem;
         } else if (isRoot && isNotePrefix) {
           const extracted = extractItemType(trimmed);
           currentItem = { text: extracted.text, type: extracted.type, subItems: [], indent: leadingSpaces };

@@ -113,13 +113,33 @@ export default function LessonModule({
             paddingBottom: '8px',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
             gap: '8px'
           }}
         >
-          <span style={{ color: 'var(--primary-orange)', display: 'flex', alignItems: 'center' }}>
-            {renderIcon('ChevronRight', 'w-5 h-5')}
-          </span>
-          <span>{item.text}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: 'var(--primary-orange)', display: 'flex', alignItems: 'center' }}>
+              {renderIcon('ChevronRight', 'w-5 h-5')}
+            </span>
+            <span>{item.text}</span>
+          </div>
+          {item.checkpoint && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '12px',
+              fontWeight: '700',
+              color: 'var(--primary-blue)',
+              backgroundColor: 'var(--primary-blue-pastel)',
+              padding: '4px 8px',
+              borderRadius: '12px',
+              fontFamily: 'monospace'
+            }}>
+              {renderIcon('Clock', 'w-3.5 h-3.5')}
+              <span>{item.checkpoint}</span>
+            </div>
+          )}
         </div>
       );
     }
