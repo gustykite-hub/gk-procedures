@@ -84,11 +84,11 @@ export default function LessonModule({
 
   const listItems = section.items || [];
   
-  // Calculate read progress for this section (excluding subtitles)
-  const checkableItems = listItems.filter(item => item.type !== 'subtitle');
+  // Calculate read progress for this section (only checkable 'normal' items)
+  const checkableItems = listItems.filter(item => item.type === 'normal');
   const totalItems = checkableItems.length;
   const tickedCount = listItems.reduce((acc, item, idx) => {
-    if (item.type !== 'subtitle' && tickedItems[idx]) {
+    if (item.type === 'normal' && tickedItems[idx]) {
       return acc + 1;
     }
     return acc;
@@ -120,6 +120,41 @@ export default function LessonModule({
             {renderIcon('ChevronRight', 'w-5 h-5')}
           </span>
           <span>{item.text}</span>
+        </div>
+      );
+    }
+
+    if (item.type === 'note' || item.type === 'warning' || item.type === 'tip') {
+      const callout = getCalloutStyles(item.type, false);
+      return (
+        <div 
+          key={index} 
+          style={{
+            borderLeft: '4px solid',
+            borderLeftColor: callout.borderColor,
+            backgroundColor: callout.backgroundColor,
+            padding: '16px 20px',
+            borderRadius: 'var(--border-radius-md)',
+            marginBottom: '12px',
+            marginTop: '8px',
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'flex-start',
+            fontSize: '14px',
+            color: 'var(--text-main)',
+            lineHeight: '1.6',
+            boxShadow: 'var(--shadow-inset)'
+          }}
+        >
+          <span style={{ color: callout.iconColor, display: 'flex', alignItems: 'center', marginTop: '2px' }}>
+            {renderIcon(callout.iconName, 'w-4 h-4')}
+          </span>
+          <div style={{ flex: 1 }}>
+            <span style={{ fontWeight: '700', color: callout.iconColor, marginRight: '6px', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.5px' }}>
+              {item.type}:
+            </span>
+            <span>{item.text}</span>
+          </div>
         </div>
       );
     }
