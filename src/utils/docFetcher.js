@@ -427,7 +427,15 @@ export function parseManualText(rawText) {
           // Threshold: if indented by baselineIndent + 2 or more spaces, it's a sub-item
           // BUT if the current item is a subtitle, we do NOT group under it
           const isSub = currentItem && currentItem.type !== 'subtitle' && leadingSpaces > (currentItem.indent || 0);
-          const itemType = isSubtitleText ? 'subtitle' : extracted.type;
+          
+          // A subtitle is a heading if it starts with '#' or matches GUSTYKITE/PLANNER,
+          // or is a lesson exercise heading (has duration),
+          // or is a non-lesson root heading (leadingSpaces <= baselineIndent)
+          const isSubtitle = isSubtitleText || 
+                             (section.isLesson && text.match(/\d+\s*min/i)) ||
+                             (!section.isLesson && leadingSpaces <= baselineIndent);
+
+          const itemType = isSubtitle ? 'subtitle' : extracted.type;
           const cleanText = extracted.text.replace(/^#\s*/, '');
 
           if (isSub) {
@@ -440,14 +448,17 @@ export function parseManualText(rawText) {
             }
           }
         } else {
-          // Bulleted description lines are treated as sub-items under the active exercise
-          const isSub = currentItem && currentItem.type !== 'subtitle';
+          // Bulleted description lines are treated as sub-items under the active exercise (type === 'normal')
+          const isSub = currentItem && currentItem.type === 'normal' && leadingSpaces > (currentItem.indent || 0);
           const cleanText = extracted.text.replace(/^#\s*/, '');
           if (isSub) {
             currentItem.subItems.push({ ...extracted, text: cleanText });
           } else {
-            currentItem = { text: cleanText, type: extracted.type, subItems: [], indent: leadingSpaces };
-            section.items.push(currentItem);
+            const newItem = { text: cleanText, type: extracted.type, subItems: [], indent: leadingSpaces };
+            section.items.push(newItem);
+            if (extracted.type === 'normal') {
+              currentItem = newItem;
+            }
           }
         }
       } else {
@@ -465,9 +476,9 @@ export function parseManualText(rawText) {
           activeSubtitle = currentItem;
         } else if (isRoot && isNotePrefix) {
           const extracted = extractItemType(trimmed);
-          currentItem = { text: extracted.text, type: extracted.type, subItems: [], indent: leadingSpaces };
-          section.items.push(currentItem);
-        } else if (currentItem && currentItem.type !== 'subtitle') {
+          section.items.push({ text: extracted.text, type: extracted.type, subItems: [], indent: leadingSpaces });
+          // Note: we do NOT update currentItem here to preserve the active bullet parent
+        } else if (currentItem && currentItem.type === 'normal') {
           const extracted = extractItemType(trimmed);
           currentItem.subItems.push(extracted);
         } else {
