@@ -335,6 +335,8 @@ export function parseManualText(rawText) {
     { key: 'GEAR MAINTENANCE', id: 'maintenance', title: 'Gear Maintenance', icon: 'Settings' }
   ];
 
+  const sectionsWithSubtitles = ['contacts', 'urgent-booking', 'reception', 'rentals'];
+
   const sections = SECTION_KEYWORDS.map(meta => ({
     ...meta,
     rawLines: [],
@@ -440,9 +442,11 @@ export function parseManualText(rawText) {
           const isSub = currentItem && currentItem.type !== 'subtitle' && leadingSpaces > (currentItem.indent || 0);
           
           // A subtitle is a heading if it starts with '#' or matches GUSTYKITE/PLANNER,
-          // ends with a colon, or is a lesson exercise heading (has duration)
+          // ends with a colon, is a lesson exercise heading (has duration),
+          // or is a root-level bullet in a section that supports subtitles
           const isSubtitle = isSubtitleText || 
-                             (section.isLesson && text.match(/\d+\s*min/i));
+                             (section.isLesson && text.match(/\d+\s*min/i)) ||
+                             (sectionsWithSubtitles.includes(section.id) && leadingSpaces === 0);
 
           const itemType = isSubtitle ? 'subtitle' : extracted.type;
           const cleanText = extracted.text.replace(/^#\s*/, '');

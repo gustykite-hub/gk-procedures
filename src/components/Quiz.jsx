@@ -394,7 +394,7 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
           {isAnswered ? 'Answer Keys:' : 'Select options to place in active slot:'}
         </div>
         <div className="quiz-blank-options">
-          {currentQuestion.options.map((option) => {
+          {currentQuestion.options.map((option, index) => {
             const isUsed = Object.values(placedBlanks).includes(option);
             let optionClass = 'quiz-blank-option';
             if (isUsed) optionClass += ' used';
@@ -402,7 +402,7 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
 
             return (
               <div
-                key={option}
+                key={`${option}-${index}`}
                 className={optionClass}
                 onClick={() => !isUsed && handleOptionClick(option)}
               >
