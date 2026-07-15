@@ -113,33 +113,13 @@ export default function LessonModule({
             paddingBottom: '8px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
             gap: '8px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: 'var(--primary-orange)', display: 'flex', alignItems: 'center' }}>
-              {renderIcon('ChevronRight', 'w-5 h-5')}
-            </span>
-            <span>{item.text}</span>
-          </div>
-          {item.checkpoint && (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '12px',
-              fontWeight: '700',
-              color: 'var(--primary-blue)',
-              backgroundColor: 'var(--primary-blue-pastel)',
-              padding: '4px 8px',
-              borderRadius: '12px',
-              fontFamily: 'monospace'
-            }}>
-              {renderIcon('Clock', 'w-3.5 h-3.5')}
-              <span>{item.checkpoint}</span>
-            </div>
-          )}
+          <span style={{ color: 'var(--primary-orange)', display: 'flex', alignItems: 'center' }}>
+            {renderIcon('ChevronRight', 'w-5 h-5')}
+          </span>
+          <span>{item.text}</span>
         </div>
       );
     }
@@ -183,129 +163,101 @@ export default function LessonModule({
     const callout = getCalloutStyles(item.type, isTicked);
 
     return (
-      <React.Fragment key={index}>
-        <div 
-          className={`note-item ${isTicked ? 'ticked' : ''}`}
-          style={{
-            borderLeft: '4px solid',
-            borderLeftColor: callout.borderColor,
-            backgroundColor: callout.backgroundColor,
-            cursor: 'pointer',
+      <div 
+        key={index} 
+        className={`note-item ${isTicked ? 'ticked' : ''}`}
+        style={{
+          borderLeft: '4px solid',
+          borderLeftColor: callout.borderColor,
+          backgroundColor: callout.backgroundColor,
+          cursor: 'pointer',
+          display: 'flex',
+          gap: '16px',
+          padding: '20px',
+          borderRadius: 'var(--border-radius-md)',
+          transition: 'all var(--transition-fast)',
+          position: 'relative'
+        }}
+        onClick={() => handleTickItem(index)}
+      >
+        <div style={{ display: 'flex', alignItems: 'flex-start', marginTop: '2px' }}>
+          <div style={{
+            width: '20px',
+            height: '20px',
+            borderRadius: '4px',
+            border: '2px solid',
+            borderColor: isTicked ? 'var(--success-color)' : callout.borderColor,
             display: 'flex',
-            gap: '16px',
-            padding: '20px',
-            borderRadius: 'var(--border-radius-md)',
-            transition: 'all var(--transition-fast)',
-            position: 'relative'
-          }}
-          onClick={() => handleTickItem(index)}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', marginTop: '2px' }}>
-            <div style={{
-              width: '20px',
-              height: '20px',
-              borderRadius: '4px',
-              border: '2px solid',
-              borderColor: isTicked ? 'var(--success-color)' : callout.borderColor,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: isTicked ? 'var(--success-color)' : 'transparent',
-              color: '#fff',
-              transition: 'all var(--transition-fast)'
-            }}>
-              {isTicked && renderIcon('Check', 'w-3 h-3')}
-            </div>
-          </div>
-
-          <div style={{ flex: 1 }}>
-            <div style={{ 
-              fontSize: '15px', 
-              fontWeight: '600', 
-              color: isTicked ? 'var(--text-muted)' : 'var(--text-main)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              transition: 'color var(--transition-fast)'
-            }}>
-              {!isTicked && item.type !== 'normal' && (
-                <span style={{ color: callout.iconColor, display: 'inline-flex', alignItems: 'center' }}>
-                  {renderIcon(callout.iconName, 'w-4 h-4')}
-                </span>
-              )}
-              <span>{item.text}</span>
-            </div>
-            
-            {item.subItems && item.subItems.length > 0 && (
-              <ul className="sub-list" style={{ marginTop: '12px' }} onClick={(e) => e.stopPropagation()}>
-                {item.subItems.map((sub, sIdx) => {
-                  const subText = typeof sub === 'object' ? sub.text : sub;
-                  const subType = typeof sub === 'object' ? sub.type : 'normal';
-                  const subCallout = getCalloutStyles(subType, false);
-
-                  return (
-                    <li 
-                      key={sIdx} 
-                      className="sub-list-item" 
-                      style={{ 
-                        fontSize: '13px', 
-                        color: isTicked ? 'var(--text-light)' : 'var(--text-muted)',
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '8px',
-                        padding: subType !== 'normal' && !isTicked ? '6px 12px' : '0',
-                        backgroundColor: subType !== 'normal' && !isTicked ? subCallout.backgroundColor : 'transparent',
-                        borderLeft: subType !== 'normal' && !isTicked ? `3px solid ${subCallout.borderColor}` : 'none',
-                        borderRadius: '4px',
-                        marginTop: subType !== 'normal' ? '6px' : '4px'
-                      }}
-                    >
-                      {subType !== 'normal' && !isTicked ? (
-                        <span style={{ color: subCallout.iconColor, display: 'inline-flex', alignItems: 'center', marginTop: '2px' }}>
-                          {renderIcon(subCallout.iconName, 'w-3.5 h-3.5')}
-                        </span>
-                      ) : (
-                        // Custom bullet indicator
-                        <span style={{ color: 'var(--primary-orange)', fontWeight: 'bold', marginRight: '4px' }}>•</span>
-                      )}
-                      <span>{subText}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: isTicked ? 'var(--success-color)' : 'transparent',
+            color: '#fff',
+            transition: 'all var(--transition-fast)'
+          }}>
+            {isTicked && renderIcon('Check', 'w-3 h-3')}
           </div>
         </div>
 
-        {item.checkpoint && (
-          <div 
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              marginTop: '8px',
-              marginBottom: '16px',
-              paddingRight: '4px'
-            }}
-          >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '12px',
-              fontWeight: '700',
-              color: 'var(--primary-blue)',
-              backgroundColor: 'var(--primary-blue-pastel)',
-              padding: '4px 10px',
-              borderRadius: '12px',
-              fontFamily: 'monospace'
-            }}>
-              {renderIcon('Clock', 'w-3.5 h-3.5')}
-              <span>{item.checkpoint}</span>
-            </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ 
+            fontSize: '15px', 
+            fontWeight: '600', 
+            color: isTicked ? 'var(--text-muted)' : 'var(--text-main)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'color var(--transition-fast)'
+          }}>
+            {!isTicked && item.type !== 'normal' && (
+              <span style={{ color: callout.iconColor, display: 'inline-flex', alignItems: 'center' }}>
+                {renderIcon(callout.iconName, 'w-4 h-4')}
+              </span>
+            )}
+            <span>{item.text}</span>
           </div>
-        )}
-      </React.Fragment>
+          
+          {item.subItems && item.subItems.length > 0 && (
+            <ul className="sub-list" style={{ marginTop: '12px' }} onClick={(e) => e.stopPropagation()}>
+              {item.subItems.map((sub, sIdx) => {
+                const subText = typeof sub === 'object' ? sub.text : sub;
+                const subType = typeof sub === 'object' ? sub.type : 'normal';
+                const subCallout = getCalloutStyles(subType, false);
+
+                return (
+                  <li 
+                    key={sIdx} 
+                    className="sub-list-item" 
+                    style={{ 
+                      fontSize: '13px', 
+                      color: isTicked ? 'var(--text-light)' : 'var(--text-muted)',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '8px',
+                      padding: subType !== 'normal' && !isTicked ? '6px 12px' : '0',
+                      backgroundColor: subType !== 'normal' && !isTicked ? subCallout.backgroundColor : 'transparent',
+                      borderLeft: subType !== 'normal' && !isTicked ? `3px solid ${subCallout.borderColor}` : 'none',
+                      borderRadius: '4px',
+                      marginTop: subType !== 'normal' ? '6px' : '4px'
+                    }}
+                  >
+                    {subType !== 'normal' && !isTicked ? (
+                      <span style={{ color: subCallout.iconColor, display: 'inline-flex', alignItems: 'center', marginTop: '2px' }}>
+                        {renderIcon(subCallout.iconName, 'w-3.5 h-3.5')}
+                      </span>
+                    ) : (
+                      // Custom bullet indicator
+                      <span style={{ color: 'var(--primary-orange)', fontWeight: 'bold', marginRight: '4px' }}>•</span>
+                    )}
+                    <span>{subText}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          {/* Checkpoint removed from inside card */}
+        </div>
+      </div>
     );
   };
 
@@ -429,7 +381,40 @@ export default function LessonModule({
             💡 Click on any checklist card to mark it as read.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {listItems.map((item, index) => renderChecklistItem(item, index))}
+            {listItems.map((item, index) => {
+              const isTicked = !!tickedItems[index];
+              return (
+                <div key={index} style={{ display: 'flex', flexDirection: 'column' }}>
+                  {renderChecklistItem(item, index)}
+                  {item.checkpoint && item.type !== 'subtitle' && (
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      marginTop: '8px',
+                      marginBottom: '4px',
+                      paddingRight: '4px'
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        fontSize: '12px',
+                        fontWeight: '700',
+                        color: isTicked ? 'var(--text-muted)' : 'var(--primary-blue)',
+                        backgroundColor: isTicked ? 'var(--border-color)' : 'var(--primary-blue-pastel)',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontFamily: 'monospace',
+                        transition: 'all var(--transition-fast)'
+                      }}>
+                        {renderIcon('Clock', 'w-3.5 h-3.5')}
+                        <span>{item.checkpoint}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
