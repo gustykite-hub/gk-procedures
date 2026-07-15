@@ -21,7 +21,8 @@ export default function App() {
     toggleSectionCompleted,
     saveQuizScore,
     dismissUpdateNotification,
-    checkDocUpdates
+    checkDocUpdates,
+    clearLocalCache
   } = useProgress();
 
   const [currentSectionId, setCurrentSectionId] = useState('pre-arriving');
@@ -88,6 +89,7 @@ export default function App() {
         loading={loading}
         checkDocUpdates={checkDocUpdates}
         onDebugClick={handleDebugNavigation}
+        onClearCache={clearLocalCache}
       />
 
       {/* Main Panel */}

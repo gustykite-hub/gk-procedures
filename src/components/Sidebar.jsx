@@ -10,7 +10,8 @@ export default function Sidebar({
   lastUpdated,
   loading,
   checkDocUpdates,
-  onDebugClick
+  onDebugClick,
+  onClearCache
 }) {
   const [syncMessage, setSyncMessage] = useState('');
 
@@ -137,6 +138,35 @@ export default function Sidebar({
           disabled={loading}
         >
           {loading ? 'Checking...' : 'Check for Updates'}
+        </button>
+
+        <button 
+          className="btn-clear-cache" 
+          onClick={() => {
+            if (window.confirm("Are you sure you want to clear your local cache? This will reset all your progress, quiz scores, and settings.")) {
+              onClearCache();
+            }
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--text-muted)',
+            fontSize: '11px',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            marginTop: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px',
+            width: '100%',
+            transition: 'color var(--transition-fast)'
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--danger-color)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
+        >
+          {renderIcon('Trash2', 'w-3.5 h-3.5')}
+          Clear Local Cache
         </button>
       </div>
     </aside>

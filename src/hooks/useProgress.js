@@ -122,6 +122,12 @@ export function useProgress() {
     }, {})
   };
 
+  const clearLocalCache = () => {
+    localStorage.removeItem('gustykite_app_state_v4');
+    sessionStorage.removeItem('gustykite_debug_unlocked');
+    window.location.reload();
+  };
+
   return {
     rawText: state.rawText,
     manualData: state.manualData,
@@ -136,6 +142,7 @@ export function useProgress() {
     toggleSectionCompleted,
     saveQuizScore,
     dismissUpdateNotification,
-    checkDocUpdates
+    checkDocUpdates,
+    clearLocalCache
   };
 }
