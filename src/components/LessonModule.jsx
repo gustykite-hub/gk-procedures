@@ -43,9 +43,9 @@ export default function LessonModule({
     switch (type) {
       case 'tip':
         return {
-          borderColor: 'var(--primary-blue)',
-          backgroundColor: 'var(--primary-blue-pastel)',
-          iconColor: 'var(--primary-blue)',
+          borderColor: '#6366f1',
+          backgroundColor: '#eef2ff',
+          iconColor: '#6366f1',
           iconName: 'Lightbulb'
         };
       case 'trick':
@@ -65,9 +65,9 @@ export default function LessonModule({
         };
       case 'note':
         return {
-          borderColor: 'var(--text-muted)',
-          backgroundColor: '#f8fafc',
-          iconColor: 'var(--text-muted)',
+          borderColor: '#e67e22',
+          backgroundColor: '#fdf2e9',
+          iconColor: '#e67e22',
           iconName: 'Info'
         };
       default:

@@ -436,7 +436,8 @@ export function parseManualText(rawText) {
           if (isSub) {
             currentItem.subItems.push({ ...extracted, text: cleanText });
           } else {
-            section.items.push({ text: cleanText, type: extracted.type, subItems: [] });
+            currentItem = { text: cleanText, type: extracted.type, subItems: [], indent: leadingSpaces };
+            section.items.push(currentItem);
           }
         }
       } else {
