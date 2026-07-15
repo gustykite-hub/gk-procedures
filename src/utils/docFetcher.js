@@ -62,11 +62,21 @@ RECEPTION
 . Check with reception if there are free slots
 . If no booking is made, pass it to Pendentes:
 
-# General Lesson Prep 
-. Check Payment and Waiver (Done by reception if available)
-. Greetings; ask for goals, previous sports, life experiences, known health problems or family history
-. Choose and gather Student kit (Helmet, Vest, Wetsuit and Harness w/ leash) 
-. Look at the clock and make sure the student understands the Class time will start now: “All clear? Can we start the lesson?”
+# General lesson setup 10min
+.Explain goals for today's lesson
+.Setup kite & bar (NO Wetsuit yet) Instructor inflates kite if 1st lesson, student repeats on 2nd lesson.
+Warning: Kite and lines setup is done BEFORE dressing up the client and close to the camp 
+.Assist Student setup, in this order: 
+  .Wetsuit (ONLY for water lesson starting immediately) 
+Warning:If client has own wetsuit, check the quality and 4/3mm 
+Warning: Make sure the student is not too hot to enter the water. Thermal shock decreases performance and can lead to a bad start or sickness. If to hot, wash the face, feet and hands before diving in completely.
+Note: Can keep wetsuit down (legs only) while kite setup. 
+  .Vest (adjust shoulder straps and lateral straps.pull shoulder straps up to see if it stays put)
+  .Harness (Legs in; Velcro under belly button; (Chair must be under the buttchick) close leg straps first, then Spreader bar
+  .Lycra
+  .Helmet (Make sure is tight and straight straps)
+  .Radio on check
+Warning: Check if sizes are snug and comfortable.
 
 # After Lesson reception
 . Assess client satisfaction, exhaustion, comfort and expectations.
@@ -336,7 +346,7 @@ export function parseManualText(rawText) {
     }
 
     // Check if line switches section (must be a standalone heading, not a list item)
-    const isBulletLine = /^[*\-•◦▪.]\s+/.test(trimmed) || /^\d+[\-.]?\s+/.test(trimmed) || /^->\s+/.test(trimmed);
+    const isBulletLine = /^[*\-•◦▪.]\s*/.test(trimmed) || /^\d+[\-.]\s*/.test(trimmed) || /^->\s*/.test(trimmed);
     let matchingSection = null;
     if (!isBulletLine) {
       matchingSection = SECTION_KEYWORDS.find(s => {
@@ -365,7 +375,7 @@ export function parseManualText(rawText) {
       const trimmed = line.trim();
       const leadingSpaces = line.length - line.trimStart().length;
       
-      const isBullet = /^[*\-•◦▪.]\s+/.test(trimmed) || /^\d+[\-.]?\s+/.test(trimmed) || /^->\s+/.test(trimmed);
+      const isBullet = /^[*\-•◦▪.]\s*/.test(trimmed) || /^\d+[\-.]\s*/.test(trimmed) || /^->\s*/.test(trimmed);
       if (isBullet) {
         baselineIndent = leadingSpaces;
         break;
@@ -401,7 +411,7 @@ export function parseManualText(rawText) {
       }
 
       // Check if it's a bullet (no dot bullet like ".")
-      const bulletMatch = trimmed.match(/^([*\-•◦▪]|->|\d+[\-.]?|\.)\s+(.*)$/);
+      const bulletMatch = trimmed.match(/^([*\-•◦▪.]|->|\d+[\-.]\s*)\s*(.*)$/);
       
       if (bulletMatch) {
         const text = bulletMatch[2];
