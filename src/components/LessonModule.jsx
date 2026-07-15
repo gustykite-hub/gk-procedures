@@ -98,12 +98,9 @@ export default function LessonModule({
   // Render a clean checklist item
   const renderChecklistItem = (item, index) => {
     if (item.type === 'subtitle') {
-      // Extract duration from text if present (e.g. "General lesson setup 10min")
-      const durationMatch = item.text.match(/(\d+\s*min)/i);
-      const durationText = durationMatch ? durationMatch[1] : null;
-      const cleanText = durationText 
-        ? item.text.replace(durationText, '').trim() 
-        : item.text;
+      const durationMatch = item.text.match(/(.*?)(\d+\s*min)$/i);
+      const titleText = durationMatch ? durationMatch[1].replace(/:\s*$/, '').trim() : item.text;
+      const duration = durationMatch ? durationMatch[2].trim() : null;
 
       return (
         <div 
@@ -121,16 +118,16 @@ export default function LessonModule({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '8px'
+            gap: '12px'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ color: 'var(--primary-orange)', display: 'flex', alignItems: 'center' }}>
               {renderIcon('ChevronRight', 'w-5 h-5')}
             </span>
-            <span>{cleanText}</span>
+            <span>{titleText}</span>
           </div>
-          {durationText && (
+          {duration && (
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -139,14 +136,14 @@ export default function LessonModule({
               fontWeight: '700',
               color: 'var(--primary-orange)',
               backgroundColor: 'var(--primary-orange-pastel)',
-              border: '1px solid var(--primary-orange-pastel-deep)',
-              padding: '3px 8px',
+              padding: '3px 10px',
               borderRadius: '12px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
+              fontFamily: 'monospace',
+              border: '1px solid var(--primary-orange-pastel-deep)',
+              lineHeight: '1'
             }}>
-              {renderIcon('Clock', 'w-3 h-3')}
-              <span>{durationText}</span>
+              {renderIcon('Clock', 'w-3.5 h-3.5')}
+              <span>{duration}</span>
             </div>
           )}
         </div>
