@@ -345,7 +345,7 @@ export function parseManualText(rawText) {
     }
 
     // Check if line switches section (must be a standalone heading, not a list item)
-    const isBulletLine = /^[*\-]\s+/.test(trimmed) || /^\d+[\-.]?\s+/.test(trimmed) || /^->\s+/.test(trimmed);
+    const isBulletLine = /^[*\-•◦▪.]\s+/.test(trimmed) || /^\d+[\-.]?\s+/.test(trimmed) || /^->\s+/.test(trimmed);
     let matchingSection = null;
     if (!isBulletLine) {
       matchingSection = SECTION_KEYWORDS.find(s => {
@@ -374,7 +374,7 @@ export function parseManualText(rawText) {
       const trimmed = line.trim();
       const leadingSpaces = line.length - line.trimStart().length;
       
-      const isBullet = /^[*\-]\s+/.test(trimmed) || /^\d+[\-.]?\s+/.test(trimmed) || /^->\s+/.test(trimmed);
+      const isBullet = /^[*\-•◦▪.]\s+/.test(trimmed) || /^\d+[\-.]?\s+/.test(trimmed) || /^->\s+/.test(trimmed);
       if (isBullet) {
         baselineIndent = leadingSpaces;
         break;
@@ -406,7 +406,7 @@ export function parseManualText(rawText) {
       }
 
       // Check if it's a bullet (no dot bullet like ".")
-      const bulletMatch = trimmed.match(/^([*\-]|->|\d+[\-.]?)\s+(.*)$/);
+      const bulletMatch = trimmed.match(/^([*\-•◦▪]|->|\d+[\-.]?|\.)\s+(.*)$/);
       
       if (bulletMatch) {
         const text = bulletMatch[2];
