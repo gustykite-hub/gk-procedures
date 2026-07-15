@@ -1,34 +1,15 @@
-import proceduresMarkdown from '../assets/procedures.md?raw';
-
-// Google Doc ID and Export URL
-const DOC_ID = '1gisUv-iGqgT8HxZh1CK65EH4PT4jGwS2InFV8FViuto';
-const EXPORT_URL = `https://docs.google.com/document/d/${DOC_ID}/export?format=txt`;
-
-// CORS proxies to try sequentially
-const PROXIES = [
-  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  (url) => url // Direct fallback
-];
+import proceduresMarkdown from '../../public/procedures.md?raw';
 
 export const FALLBACK_RAW_TEXT = proceduresMarkdown;
 
-// Helper: Try fetching Google Doc using proxies sequentially
+// Fetch procedures.md directly from the website host
 export async function fetchRawText() {
-  for (const proxyFn of PROXIES) {
-    try {
-      const response = await fetch(proxyFn(EXPORT_URL));
-      if (!response.ok) continue;
-      const text = await response.text();
-      // Basic check to ensure it's not HTML error or proxy garbage
-      if (text && text.includes('General Guidelines') && !text.includes('<!DOCTYPE html>')) {
-        return text;
-      }
-    } catch (e) {
-      console.warn("Failed to fetch with proxy", e);
-    }
+  const response = await fetch('/procedures.md');
+  if (!response.ok) {
+    throw new Error("Failed to retrieve procedures.md from server.");
   }
-  throw new Error("All fetch attempts failed");
+  const text = await response.text();
+  return text;
 }
 
 // Function to extract text and tag it with a type based on prefixes (e.g. Tip:, Note:, Warning:, Caution:)

@@ -203,7 +203,7 @@ Warning: ONLY IF CONTROL IS VERY GOOD
 - Move the kite from 3 to 1. Start slowly and build up speed gradually. Use the kite to move you around. Change sides and repeat small power strokes. Sit down on the sand, speed up the power strokes (1 to 3) and drag on your feet. Shoulders MUST stay back and legs bent/crouch.
 01h53
 
-# LESSON 2 (Body-drag/Steady-pull)
+# Lesson 2 (Body-drag/Steady-pull)
 [Explain > Demonstrate > Assist > Correct]
 
 ## Customer 2nd lesson meeting (by instructor)
@@ -263,7 +263,7 @@ Tip: Push board down under the ass. Keep doing as many 8 figures as they can fro
 Note: Practice relaunch and staying calm if crashing in deep water
 02h00
 
-# LESSON 3 (Waterstart)
+# Lesson 3 (Waterstart)
 [Explain > Demonstrate > Assist > Correct]
 
 Tip: Regain trust and correct Power strokes ON SOFT SAND, then on water
@@ -308,7 +308,7 @@ Tip: Falling forward -> power to kite; shoulders back; Falling back -> power to 
 Tip: If necessary go back on the sand, land the kite, stay face-to-face and connect hooks with leash to make him balance and understand how shoulders influence balance. The instructor must keep the same pull and the client shifts shoulders forward and back.
 01h55
 
-# RENTALS
+# Rentals
 ## Customer 1st meeting
 - Greetings; ask for previous sports, kite experience
 - Make sure they have PAID and signed WAIVER on the system
@@ -321,7 +321,7 @@ Warning: Client should NOT try to Self Rescue or reactivate if the Quick Release
 - Launch the kite, check flight, power and untwist lines
 - Lower the kite to the sand, pass the bar to client and make sure he launches properly
 
-# GEAR MAINTENANCE
+# Gear Maintenance
 - Gear is brought back to the warehouse and washed with clean water after every class
 - It can be left overnight hanging to dry but must be stored out of the Sun when it's dry.
 - Periodically check safety systems are working smooth and any tear and wear on kites, bridles and bars.
