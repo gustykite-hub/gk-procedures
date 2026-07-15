@@ -9,10 +9,8 @@ export default function Sidebar({
   version,
   lastUpdated,
   loading,
-  error,
   checkDocUpdates,
-  history,
-  onShowHistory
+  onDebugClick
 }) {
   const [syncMessage, setSyncMessage] = useState('');
 
@@ -96,25 +94,16 @@ export default function Sidebar({
             </li>
           );
         })}
-
-        {/* Change History Link */}
-        {history && history.length > 0 && (
-          <li 
-            className={`nav-item ${currentSectionId === 'changelog' ? 'active' : ''}`}
-            onClick={() => setCurrentSectionId('changelog')}
-            style={{ borderTop: '1px dashed var(--border-color)', marginTop: '8px' }}
-          >
-            <span className="nav-item-icon">
-              {renderIcon('History', 'w-4 h-4')}
-            </span>
-            <span>Update Changelog</span>
-          </li>
-        )}
-
         {/* Debug Content Link */}
         <li 
           className={`nav-item ${currentSectionId === 'debug' ? 'active' : ''}`}
-          onClick={() => setCurrentSectionId('debug')}
+          onClick={() => {
+            if (onDebugClick) {
+              onDebugClick();
+            } else {
+              setCurrentSectionId('debug');
+            }
+          }}
           style={{ borderTop: '1px dashed var(--border-color)', marginTop: '8px' }}
         >
           <span className="nav-item-icon">

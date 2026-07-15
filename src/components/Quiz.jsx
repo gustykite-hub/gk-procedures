@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'lucide-react';
 
+// Helper to shuffle and pick a subset of questions
+const shuffleAndSample = (pool, size = 4) => {
+  if (!pool || pool.length === 0) return [];
+  const shuffled = [...pool]
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+  return shuffled.slice(0, size);
+};
+
 export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) {
+  const [activeQuestions, setActiveQuestions] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isAnswered, setIsAnswered] = useState(false);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
@@ -18,9 +29,9 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
   const [placedBlanks, setPlacedBlanks] = useState({});
   const [activeSlotIdx, setActiveSlotIdx] = useState(0);
 
-  const currentQuestion = questions ? questions[currentIdx] : null;
+  const currentQuestion = activeQuestions && activeQuestions.length > 0 ? activeQuestions[currentIdx] : null;
 
-  // Initialize and reset states when section or question changes
+  // Initialize and reset states when section or active questions change
   useEffect(() => {
     if (!currentQuestion) return;
 
@@ -40,14 +51,18 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
       // Default Q&A
       setSelectedIdx(null);
     }
-  }, [currentIdx, sectionId, questions]);
+  }, [currentIdx, sectionId, activeQuestions]);
 
   // Reset entire quiz when switching sections
   useEffect(() => {
     setCurrentIdx(0);
     setCorrectAnswersCount(0);
     setQuizFinished(false);
-  }, [sectionId]);
+    
+    // Generate a fresh random subset of 4 questions from the pool
+    const selected = shuffleAndSample(questions, 4);
+    setActiveQuestions(selected);
+  }, [sectionId, questions]);
 
   const renderIcon = (iconName, className = "w-5 h-5") => {
     const IconComponent = Icons[iconName] || Icons.BookOpen;
@@ -67,10 +82,12 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
     e.dataTransfer.effectAllowed = 'move';
   };
 
+  // Drag over
   const handleDragOver = (e, idx) => {
     e.preventDefault();
   };
 
+  // Drop handler
   const handleDrop = (e, idx) => {
     e.preventDefault();
     if (draggedIdx === null || draggedIdx === idx) return;
@@ -132,6 +149,7 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
     }
   };
 
+  // Handle slot click
   const handleSlotClick = (slotIdx) => {
     if (isAnswered) return;
 
@@ -166,13 +184,13 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
   };
 
   const handleNext = () => {
-    if (currentIdx + 1 < questions.length) {
+    if (currentIdx + 1 < activeQuestions.length) {
       setCurrentIdx(prev => prev + 1);
     } else {
       setQuizFinished(true);
       // Save final score
       if (typeof onSaveScore === 'function') {
-        onSaveScore(sectionId, correctAnswersCount, questions.length);
+        onSaveScore(sectionId, correctAnswersCount, activeQuestions.length);
       }
     }
   };
@@ -188,9 +206,13 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
     setPlacedBlanks({});
     setActiveSlotIdx(0);
     setIsAnswered(false);
+
+    // Shuffle and sample a fresh set of questions
+    const selected = shuffleAndSample(questions, 4);
+    setActiveQuestions(selected);
   };
 
-  if (!questions || questions.length === 0) return null;
+  if (!activeQuestions || activeQuestions.length === 0) return null;
 
   // Check if current question submission is allowed
   const isSubmitDisabled = () => {
@@ -422,7 +444,7 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
       {!quizFinished ? (
         <div className="quiz-question-box">
           <div className="quiz-question-num">
-            Question {currentIdx + 1} of {questions.length} • {currentQuestion?.type === 'sequencing' ? 'Sequencing' : currentQuestion?.type === 'blanks' ? 'Fill-in-the-Blanks' : 'Q&A'}
+            Question {currentIdx + 1} of {activeQuestions.length} • {currentQuestion?.type === 'sequencing' ? 'Sequencing' : currentQuestion?.type === 'blanks' ? 'Fill-in-the-Blanks' : 'Q&A'}
           </div>
           <div className="quiz-question-text">
             {currentQuestion.question}
@@ -432,8 +454,8 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
           {currentQuestion.type === 'sequencing' 
             ? renderSequencing() 
             : currentQuestion.type === 'blanks' 
-              ? renderBlanks() 
-              : renderQnA()}
+            ? renderBlanks() 
+            : renderQnA()}
 
           {/* Explanation Feedbacks */}
           {isAnswered && (
@@ -468,7 +490,7 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
               </button>
             ) : (
               <button className="btn-next-question" onClick={handleNext}>
-                {currentIdx + 1 === questions.length ? 'Finish Quiz' : 'Next Question'}
+                {currentIdx + 1 === activeQuestions.length ? 'Finish Quiz' : 'Next Question'}
               </button>
             )}
           </div>
@@ -477,15 +499,15 @@ export default function Quiz({ sectionId, questions, savedScore, onSaveScore }) 
         /* Quiz Finished View */
         <div className="quiz-results">
           <div className="quiz-score-circle">
-            {correctAnswersCount} / {questions.length}
+            {correctAnswersCount} / {activeQuestions.length}
           </div>
           <h4 className="quiz-results-title">
-            {correctAnswersCount === questions.length ? 'Perfect Score! 🏄‍♂️' : 'Quiz Completed!'}
+            {correctAnswersCount === activeQuestions.length ? 'Perfect Score! 🏄‍♂️' : 'Quiz Completed!'}
           </h4>
           <p className="quiz-results-subtitle">
-            {correctAnswersCount === questions.length
+            {correctAnswersCount === activeQuestions.length
               ? 'Excellent! You have fully mastered the procedures for this section.'
-              : `You got ${correctAnswersCount} out of ${questions.length} questions correct. Review the procedures and try again!`}
+              : `You got ${correctAnswersCount} out of ${activeQuestions.length} questions correct. Review the procedures and try again!`}
           </p>
           <button
             className="btn-next-question"

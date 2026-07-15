@@ -31,17 +31,17 @@ export const FALLBACK_RAW_TEXT = `General Guidelines
 CONTACTS 
 
 GUSTYKITE
-1. Welcome: GUSTYKITE welcomes the client and gathers basic info and concerns.
-2. Booking: Ask the client to book on the website.
-3. Confirmation: Receive confirmation of the booking.
-4. Handover: Pass the client details to the Planner.
-Note: 1 or 2 weeks before the lesson, an automatic email with a reminder is sent by the booking system.
+* welcome and gather basic info and concerns
+* ask the client to book it at website
+* receive confirmation
+* pass to Planner
+Note: 1 or 2 weeks before, an automatic email is sent by the booking system with reminder
 
 
 PLANNER
-1. Coordination: contacts the client to schedule the lesson, confirm location and warn about Payment, Waiver and arriving 15 min. ahead;
-2. Pre-lesson Approval: 2 or 3 days before the lesson: Approve, Reschedule or Decline lesson
-3. Instructor Assignment: Define Instructor and Remarks (notes & gear)
+* contacts the client to schedule the lesson, confirm location and warn about Payment, Waiver and arriving 15 min. ahead;
+* 2 or 3 days before: Approve, Reschedule or Decline lesson
+* Define Instructor and Remarks (notes & gear)
 
 
 URGENT BOOKING 
@@ -288,7 +288,7 @@ export async function fetchRawText() {
 
 // Function to extract text and tag it with a type based on prefixes (e.g. Tip:, Note:, Warning:, Caution:)
 function extractItemType(text) {
-  const prefixMatch = text.match(/^(Tip|Note|Warning|Caution|Trick):\s*(.*)$/i);
+  const prefixMatch = text.match(/^(Tip|Note|Warning|Caution|Trick|Subtitle):\s*(.*)$/i);
   if (prefixMatch) {
     let type = prefixMatch[1].toLowerCase();
     // Rule: Map 'trick' to 'tip', map 'caution' to 'warning'
@@ -410,34 +410,47 @@ export function parseManualText(rawText) {
       
       if (bulletMatch) {
         const text = bulletMatch[2];
+        const extracted = extractItemType(text);
+        const isSubtitleText = extracted.text.toUpperCase() === 'GUSTYKITE' || extracted.text.toUpperCase() === 'PLANNER';
         
         // Inside lessons, a bullet is only considered a main exercise card if it has a duration (e.g. 10min) or ends with a colon
         const isExerciseTitle = !section.isLesson || text.match(/\d+\s*min/i) || text.trim().endsWith(':');
 
         if (isExerciseTitle) {
           // Threshold: if indented by baselineIndent + 2 or more spaces, it's a sub-item
-          const isSub = leadingSpaces >= baselineIndent + 2;
-          const extracted = extractItemType(text);
+          // BUT if the current item is a subtitle, we do NOT group under it
+          const isSub = leadingSpaces >= baselineIndent + 2 && currentItem && currentItem.type !== 'subtitle';
+          const itemType = isSubtitleText ? 'subtitle' : extracted.type;
 
-          if (isSub && currentItem) {
+          if (isSub) {
             currentItem.subItems.push(extracted);
           } else {
-            currentItem = { text: extracted.text, type: extracted.type, subItems: [] };
+            currentItem = { text: extracted.text, type: itemType, subItems: [] };
             section.items.push(currentItem);
           }
         } else {
           // Bulleted description lines are treated as sub-items under the active exercise
-          if (currentItem) {
-            const extracted = extractItemType(text);
+          const isSub = currentItem && currentItem.type !== 'subtitle';
+          if (isSub) {
             currentItem.subItems.push(extracted);
           } else {
-            const extracted = extractItemType(text);
-            section.generalNotes.push(extracted);
+            section.items.push({ text: extracted.text, type: extracted.type, subItems: [] });
           }
         }
       } else {
         // Regular line (no bullet marker)
-        if (currentItem) {
+        const isRoot = leadingSpaces <= baselineIndent;
+        const isNotePrefix = trimmed.match(/^(Tip|Note|Warning|Caution|Trick):\s*(.*)$/i);
+        const isSubtitleText = trimmed.toUpperCase() === 'GUSTYKITE' || trimmed.toUpperCase() === 'PLANNER';
+
+        if (isRoot && isSubtitleText) {
+          currentItem = { text: trimmed, type: 'subtitle', subItems: [] };
+          section.items.push(currentItem);
+        } else if (isRoot && isNotePrefix) {
+          const extracted = extractItemType(trimmed);
+          currentItem = { text: extracted.text, type: extracted.type, subItems: [] };
+          section.items.push(currentItem);
+        } else if (currentItem && currentItem.type !== 'subtitle') {
           const extracted = extractItemType(trimmed);
           currentItem.subItems.push(extracted);
         } else {

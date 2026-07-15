@@ -84,13 +84,46 @@ export default function LessonModule({
 
   const listItems = section.items || [];
   
-  // Calculate read progress for this section
-  const totalItems = listItems.length;
-  const tickedCount = Object.values(tickedItems).filter(Boolean).length;
+  // Calculate read progress for this section (excluding subtitles)
+  const checkableItems = listItems.filter(item => item.type !== 'subtitle');
+  const totalItems = checkableItems.length;
+  const tickedCount = listItems.reduce((acc, item, idx) => {
+    if (item.type !== 'subtitle' && tickedItems[idx]) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
   const readProgressPercent = totalItems > 0 ? Math.round((tickedCount / totalItems) * 100) : 0;
 
   // Render a clean checklist item
   const renderChecklistItem = (item, index) => {
+    if (item.type === 'subtitle') {
+      return (
+        <div 
+          key={index} 
+          style={{
+            fontSize: '17px',
+            fontWeight: '700',
+            color: 'var(--text-main)',
+            marginTop: '28px',
+            marginBottom: '12px',
+            paddingLeft: '4px',
+            fontFamily: 'var(--font-heading)',
+            borderBottom: '2px solid var(--border-color)',
+            paddingBottom: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <span style={{ color: 'var(--primary-orange)', display: 'flex', alignItems: 'center' }}>
+            {renderIcon('ChevronRight', 'w-5 h-5')}
+          </span>
+          <span>{item.text}</span>
+        </div>
+      );
+    }
+
     const isTicked = !!tickedItems[index];
     const callout = getCalloutStyles(item.type, isTicked);
 

@@ -42,15 +42,15 @@ export const quizzesData = {
     {
       id: 'pa-q4',
       type: 'qna',
-      question: "What is the exact 4-step sequence all exercises must follow?",
+      question: "What is a mandatory requirement regarding watches for all instructors?",
       options: [
-        "Explain -> Assist -> Correct -> Demonstrate",
-        "Demonstrate -> Explain -> Assist -> Correct",
-        "Demonstrate -> Correct -> Assist -> Repeat",
-        "Explain -> Demonstrate -> Correct -> Let Go"
+        "A smartwatch connected to the manager's phone",
+        "A waterproof watch",
+        "A digital stopwatch only",
+        "Watches are not allowed for safety reasons"
       ],
       correctIndex: 1,
-      explanation: "The manual sequence is: '1- DEMONSTRATE, 2- EXPLAIN, 3- ASSIST, 4- CORRECT.'"
+      explanation: "The manual states: 'Must have a waterproof watch.'"
     },
     {
       id: 'pa-seq1',
@@ -70,8 +70,34 @@ export const quizzesData = {
       question: "Fill in the missing words for GUSTYKITE general guidelines:",
       text: "All instructors must always wear a {0} except for the {1} lesson. Never put a student on the water without a {2}.",
       blanks: ["wetsuit", "first", "wetsuit"],
-      options: ["wetsuit", "first", "lycra", "second", "harness"],
+      options: ["wetsuit", "first", "wetsuit", "lycra", "second", "harness", "helmet"],
       explanation: "General Guidelines state: 'Must always wear a wetsuit except for the first lesson. Never put a student on the water without a wetsuit.'"
+    },
+    {
+      id: 'pa-q5',
+      type: 'qna',
+      question: "If you think the allocated kite or board sizes are not ideal for your student, what must you do?",
+      options: [
+        "Use the allocated gear anyway to save time",
+        "Talk to reception and other instructors to make sure you can change it",
+        "Cancel the lesson immediately",
+        "Decide on the water by testing it yourself first"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'If you think kite/board sizes are not ideal you MUST talk to reception and instructors to make sure you can change.'"
+    },
+    {
+      id: 'pa-q6',
+      type: 'qna',
+      question: "When should all kites and boards be checked for leaks, cuts, or other damages?",
+      options: [
+        "Once a week on Monday mornings",
+        "Only when a student crashes the kite hard",
+        "After every session",
+        "At the start of the summer season only"
+      ],
+      correctIndex: 2,
+      explanation: "The manual states: 'All kites and boards must be checked for damages, leaks or cuts after every session.'"
     }
   ],
   'contacts': [
@@ -93,13 +119,13 @@ export const quizzesData = {
       type: 'qna',
       question: "What should the planner do 2 or 3 days before the scheduled lesson?",
       options: [
-        "Approve, Release, or Decline the lesson, and define the instructor/remarks",
+        "Approve, Reschedule, or Decline the lesson, and define the instructor/remarks",
         "Charge the customer's credit card manually",
         "Conduct a wind assessment at the beach",
         "Cancel the lesson if there is no wind forecast"
       ],
       correctIndex: 0,
-      explanation: "The manual states: '* 2/3 days before: Approve, Release or Decline lesson. Define Instructor and Remarks (notes & gear)'"
+      explanation: "The manual states: '* 2/3 days before: Approve, Reschedule or Decline lesson. Define Instructor and Remarks (notes & gear)'"
     },
     {
       id: 'c-blank1',
@@ -122,6 +148,41 @@ export const quizzesData = {
       ],
       correctIndex: 0,
       explanation: "Under GUSTYKITE tasks: 'welcome and gather basic info and concerns; ask the client to book it at website; receive confirmation; pass to Planner.'"
+    },
+    {
+      id: 'c-q4',
+      type: 'qna',
+      question: "When the planner contacts the client to schedule a lesson, what three things must they warn the client about?",
+      options: [
+        "Wind speed, water temperature, and wetsuit sizes",
+        "Payment, Waiver, and arriving 15 minutes ahead",
+        "Kite models, board sizes, and helmet colors",
+        "Parking availability, beach restaurants, and weather forecasts"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'PLANNER contacts the client to schedule the lesson, confirm location and warn about Payment, Waiver and arriving 15 min. ahead;'"
+    },
+    {
+      id: 'c-blank2',
+      type: 'blanks',
+      question: "Fill in the missing details for scheduling:",
+      text: "The Planner approves, reschedules, or declines the lesson {0} days before the lesson, defining the {1} and {2}.",
+      blanks: ["2 or 3", "instructor", "remarks"],
+      options: ["2 or 3", "instructor", "remarks", "5 or 6", "receptionist", "deposit"],
+      explanation: "Under Planner tasks: '2 or 3 days before: Approve, Reschedule or Decline lesson. Define Instructor and Remarks (notes & gear)'"
+    },
+    {
+      id: 'c-q5',
+      type: 'qna',
+      question: "What should you do if no booking is made after welcoming a client at the beach?",
+      options: [
+        "Let the client walk away without taking any details",
+        "Create a booking anyway and charge their card later",
+        "Pass the client's details to 'Pendentes' list",
+        "Immediately assign an instructor to wait at the beach"
+      ],
+      correctIndex: 2,
+      explanation: "The manual states under beach contacts: 'If no booking is made, pass it to Pendentes.'"
     }
   ],
   'urgent-booking': [
@@ -171,6 +232,28 @@ export const quizzesData = {
         "Planner approves the lesson and defines instructor/remarks"
       ],
       explanation: "The manual workflow: GUSTYKITE receives request -> client contacts Planner -> Planner requests Full Payment -> Approve lesson -> Define instructor."
+    },
+    {
+      id: 'ub-q3',
+      type: 'qna',
+      question: "What criteria defines an 'urgent booking' request at GUSTYKITE?",
+      options: [
+        "Any booking made during high wind conditions",
+        "A booking request for the same day or within the next 3 days",
+        "Bookings for groups larger than 5 people",
+        "A request made after the school office is closed"
+      ],
+      correctIndex: 1,
+      explanation: "The manual defines urgent booking as: '(booking request for same day or in the next 3 days)'"
+    },
+    {
+      id: 'ub-blank2',
+      type: 'blanks',
+      question: "Fill in the missing terms for urgent scheduling:",
+      text: "When GUSTYKITE receives an urgent booking request, staff informs the client to contact the {0} immediately, who then requests booking and {1}.",
+      blanks: ["Planner", "Full Payment"],
+      options: ["Planner", "Full Payment", "Manager", "deposit", "instructor", "waiver"],
+      explanation: "The manual workflow: 'GUSTYKITE receives request and informs client to contact Planner -> Planner requests booking and Full Payment'"
     }
   ],
   'reception': [
@@ -235,6 +318,41 @@ export const quizzesData = {
       blanks: ["satisfaction", "next days", "damage", "bags"],
       options: ["satisfaction", "next days", "damage", "bags", "wetsuits", "next weeks", "receipts"],
       explanation: "The manual tasks include: Assess client satisfaction, check availability for next days, check for visible damage on gear, and check all gear is stored in the right bags."
+    },
+    {
+      id: 'r-q4',
+      type: 'qna',
+      question: "Which of the following should you ask a student about during the initial greetings protocol?",
+      options: [
+        "Their swimming credentials and certificates",
+        "Goals, previous sports, life experiences, health problems, or family history",
+        "Their budget and how much cash they brought",
+        "Their preferred kite color and brand"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Greetings; ask for goals, previous sports, life experiences, known health problems or family history.'"
+    },
+    {
+      id: 'r-blank2',
+      type: 'blanks',
+      question: "Fill in the missing words for starting lesson time:",
+      text: "Make sure the student understands that the class time starts by looking at the clock and saying: “{0}? Can we {1}?”",
+      blanks: ["All clear", "start the lesson"],
+      options: ["All clear", "start the lesson", "Are you ready", "begin now", "Is it wind", "go to water"],
+      explanation: "The manual states: 'Look at the clock and make sure the student understands the Class time will start now: “All clear? Can we start the lesson?”'"
+    },
+    {
+      id: 'r-q5',
+      type: 'qna',
+      question: "What information should you gather when an inquiry is received at the beach?",
+      options: [
+        "Their social security number and ID photocopy",
+        "Name, phone number, and/or email address",
+        "Their credit card details and deposit",
+        "Their weight and height only"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Contact at the beach: Gather name, phone number and/or email address.'"
     }
   ],
   'lesson-1': [
@@ -298,6 +416,41 @@ export const quizzesData = {
       blanks: ["face", "feet", "hands"],
       options: ["face", "feet", "hands", "chest", "harness", "ears"],
       explanation: "The manual notes: 'If too hot, wash the face, feet and hands before diving in completely.'"
+    },
+    {
+      id: 'l1-q5',
+      type: 'qna',
+      question: "During preflight checks, how do you verify that direction lines are not twisted or crossed?",
+      options: [
+        "Launch the kite first to see if it flies straight",
+        "Tension the direction lines to check that none are over center lines",
+        "Lay the lines in circles on the sand",
+        "Hold both lines and pull as hard as possible"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Go back to the bar and do the Preflight check (Tension direction lines to check none are over these [center lines])'"
+    },
+    {
+      id: 'l1-q6',
+      type: 'qna',
+      question: "Where should the kite and lines setup be completed relative to the client's preparation?",
+      options: [
+        "After dressing the client in their wetsuit and harness",
+        "Before dressing up the client, close to the camp",
+        "Directly in the deep water before launching",
+        "Simultaneously while the client puts on their helmet"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Kite and lines setup is done BEFORE dressing up the client and close to the camp.'"
+    },
+    {
+      id: 'l1-blank2',
+      type: 'blanks',
+      question: "Fill in the missing words for launch assistance:",
+      text: "To assist launching, hold the LE in the {0} strut until lines are tensioned, making sure the kite is not touching the {1}.",
+      blanks: ["central", "sand"],
+      options: ["central", "sand", "side", "water", "upper", "dunes"],
+      explanation: "The manual states: 'Pick up the kite to transport position... hold lower, under the central strut of the kite. Make sure kite is not touching the sand.'"
     }
   ],
   'lesson-2': [
@@ -348,6 +501,41 @@ export const quizzesData = {
       blanks: ["kite", "upwind", "45º"],
       options: ["kite", "upwind", "45º", "bar", "downwind", "90º"],
       explanation: "The manual states: 'Point to the kite (speed up). Point upwind (speed down), then manage to stay in between (about 45º upwind).'"
+    },
+    {
+      id: 'l2-q4',
+      type: 'qna',
+      question: "When bodydraging to recover a lost board, when should you change your travel direction?",
+      options: [
+        "Every 30 seconds exactly",
+        "Only when you see the board over your back shoulder",
+        "When the kite backstalls in the wind",
+        "Only when you reach the shore line"
+      ],
+      correctIndex: 1,
+      explanation: "The manual tip states: 'While bodydraging to recover the board only changes direction when you see the board over your back shoulder.'"
+    },
+    {
+      id: 'l2-q5',
+      type: 'qna',
+      question: "For a student bodydraging with a board, where can their free hand be placed on the board?",
+      options: [
+        "They must hold the fin only",
+        "Either on the board handle or strap, whatever feels better",
+        "They must hold both footstraps with one hand",
+        "They should never touch the board with their hands while bodydraging"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Hand can be on the board handle or strap, whatever feels better.'"
+    },
+    {
+      id: 'l2-blank2',
+      type: 'blanks',
+      question: "Fill in the missing terms for water lesson prep:",
+      text: "Before going on the first water exercises, students must practice fast {0} relaunches, and instructors must explain {1} signals.",
+      blanks: ["power", "international"],
+      options: ["power", "international", "water", "hand", "beach", "safety"],
+      explanation: "The manual states: 'Students must practice fast power relaunch before going on the first water exercises... Explain international signals...'"
     }
   ],
   'lesson-3': [
@@ -398,6 +586,41 @@ export const quizzesData = {
       blanks: ["leg", "45º"],
       options: ["leg", "45º", "arm", "90º", "shoulder", "180º"],
       explanation: "The manual states: 'Student sits on the instructor's leg. Facing the kite, he will pull the bar to balance in a 45º body position until no pressure is on the instructor's leg.'"
+    },
+    {
+      id: 'l3-q3',
+      type: 'qna',
+      question: "When practicing the cruise balance stance on land, what should the student do if they feel themselves falling forward?",
+      options: [
+        "Pull the bar all the way in and throw shoulders back",
+        "Give power to the kite (sheet out) and move shoulders back",
+        "Release the chicken loop immediately",
+        "Jump forward off the instructor's leg"
+      ],
+      correctIndex: 1,
+      explanation: "The manual tip states: 'Falling forward -> power to kite; shoulders back; Falling back -> power to me; shoulders forward.'"
+    },
+    {
+      id: 'l3-q4',
+      type: 'qna',
+      question: "How far should a student ride on the board after a waterstart before transitioning to the Engage/Cruising stance?",
+      options: [
+        "At least 50 to 100 meters",
+        "Ride 5 to 10 meters to gain speed/momentum first",
+        "Change immediately as soon as they stand up",
+        "They should remain in the crouched stance for the entire run"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Stay more on top of the board and ride 5/10m... Remember to use “Stay on the board” position until having enough speed/momentum. When having enough speed adopt Engage Position!'"
+    },
+    {
+      id: 'l3-blank2',
+      type: 'blanks',
+      question: "Fill in the missing words for waterstart stopping:",
+      text: "To stop immediately after a waterstart, the student should stay {0} and {1} in the water.",
+      blanks: ["low", "fall back"],
+      options: ["low", "fall back", "high", "stand up", "crouched", "sheet out"],
+      explanation: "The manual states: 'Stay low/Don't stretch legs -> Fall back/Sit down to stop immediately.'"
     }
   ],
   'rentals': [
@@ -448,6 +671,41 @@ export const quizzesData = {
       blanks: ["PAID", "WAIVER", "Quick Release"],
       options: ["PAID", "WAIVER", "Quick Release", "registered", "deposit", "leash", "helmet"],
       explanation: "The manual states: 'Make sure they have PAID and signed WAIVER on the system. Demonstrate Safety Quick Release procedure.'"
+    },
+    {
+      id: 'rt-q4',
+      type: 'qna',
+      question: "When handing allocated gear to a rental customer, what key responsibility must you mention?",
+      options: [
+        "That the instructor will pack it up for them on the beach",
+        "That the client is responsible for the gear from that moment on",
+        "That they must clean it with sand before returning",
+        "That GUSTYKITE covers all damages for free"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Check allocated gear and hand it to the client (mention he is responsible for it from now on)'"
+    },
+    {
+      id: 'rt-q5',
+      type: 'qna',
+      question: "What gear inspection tasks must the instructor complete before launching a rental customer's kite?",
+      options: [
+        "Check that the colors of the kite match the harness",
+        "Check bar, lines, kite pressure, and attachment points",
+        "Test the student's wetsuit zipper speed",
+        "Measure the distance from the dunes to the water"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'Check bar, lines, kite pressure and attachment points.'"
+    },
+    {
+      id: 'rt-blank2',
+      type: 'blanks',
+      question: "Fill in the missing details for rental client greeting:",
+      text: "At the first rental meeting, greet the client, ask for previous {0} and kite {1}.",
+      blanks: ["sports", "experience"],
+      options: ["sports", "experience", "injuries", "lessons", "equipment", "licenses"],
+      explanation: "The manual states: 'Greetings; ask for previous sports, kite experience.'"
     }
   ],
   'maintenance': [
@@ -498,6 +756,28 @@ export const quizzesData = {
       blanks: ["safety systems", "kites", "bridles"],
       options: ["safety systems", "kites", "bridles", "pumps", "wetsuits", "leashes"],
       explanation: "The manual states: 'Periodically check safety systems are working smooth and any tear and wear on kites, bridles and bars.'"
+    },
+    {
+      id: 'gm-q4',
+      type: 'qna',
+      question: "What is the rule regarding leaving gear hanging to dry overnight?",
+      options: [
+        "It must never be left hanging overnight",
+        "It can be left overnight hanging to dry but must be stored out of the sun when it is dry",
+        "It must be dried in the warehouse using heaters",
+        "It should only dry on the boat deck overnight"
+      ],
+      correctIndex: 1,
+      explanation: "The manual states: 'It can be left overnight hanging to dry but must be stored out of the Sun when it's dry.'"
+    },
+    {
+      id: 'gm-blank2',
+      type: 'blanks',
+      question: "Fill in the missing words for gear washing:",
+      text: "Gear must be brought back to the {0} and washed with {1} after every class.",
+      blanks: ["warehouse", "clean water"],
+      options: ["warehouse", "clean water", "beach camp", "salt water", "office", "soap"],
+      explanation: "The manual states: 'Gear is brought back to the warehouse and washed with clean water after every class'"
     }
   ]
 };
