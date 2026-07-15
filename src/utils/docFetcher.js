@@ -35,7 +35,7 @@ GUSTYKITE
 * ask the client to book it at website
 * receive confirmation
 * pass to Planner
-Note: 1 or 2 weeks before, an automatic email is sent by the booking system with reminder
+Warning: 1 or 2 weeks before, an automatic email is sent by the booking system with reminder
 
 
 PLANNER
