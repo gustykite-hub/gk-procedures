@@ -55,39 +55,24 @@ GUSTYKITE
 
 
 RECEPTION
-Contact at the beach
-   1. Details: Gather name, phone number and/or email address.
-   2. Pricing Info: Inform we focus on Private lessons for faster and safer progression: 2 HOURS: 165€; 6 HOURS (3 days): 390€; 12 HOURS (6 days): 730€;
-   3. Availability: Check with reception if there are free slots.
-   4. Pendentes: If no booking is made, pass it to Pendentes:
 
+# Contact at the beach
+. Gather name, phone number and/or email address
+. Inform we focus on Private lessons for faster and safer progression and 2 HOURS: 165€; 6 HOURS (3 days): 390€; 12 HOURS (6 days): 730€;
+. Check with reception if there are free slots
+. If no booking is made, pass it to Pendentes:
 
-Customer 1st Reception: 
-   1. Admin: Check Payment and Waiver (Note: Proceed together with assigned instructor)
-   2. Greetings: ask for goals, previous sports, life experiences, known health problems or family history
-   3. Gear Selection: Choose and gather Student kit (Helmet, Vest, Wetsuit and Harness w/ leash) 
-   4. Time Start: Look at the clock and make sure the student understands the Class time will start now: “All clear? Can we start the lesson?”
-   5. Briefing: Explain goals for today's lesson
-   6. Kite Setup: Setup kite & bar (NO Wetsuit yet) Instructor inflates rescue kite, student mimics the process.
-Warning: Kite and lines setup is done BEFORE dressing up the client and close to the camp 
-   7. Student Fitting: Assist Student setup, in this order: 
-   1. Wetsuit (ONLY for water lesson starting immediately) 
-Warning: If client has own wetsuit, check if its good quality 4/3mm 
-Warning: Make sure the student is not too hot before entering the water. Thermal shock will decrease his performance and can lead to a bad start or sickness. Wash the face, feet and hands before diving in.
-Note: Can keep wetsuit down (legs only) while kite setup. 
-   2. Vest (adjust shoulder straps and lateral straps.pull shoulder straps up to see if it stays put)
-   3. Harness (Legs in; Velcro under belly button; (Chair must be under the buttchick) close leg straps first, then Spreader bar
-   4. Lycra: Put on team lycra.
-   5. Helmet (Make sure is tight and straight straps)
-   6. Radio Check: Radio on check
-Warning: Verify that all gear sizes are snug and comfortable.
+# General Lesson Prep 
+. Check Payment and Waiver (Done by reception if available)
+. Greetings; ask for goals, previous sports, life experiences, known health problems or family history
+. Choose and gather Student kit (Helmet, Vest, Wetsuit and Harness w/ leash) 
+. Look at the clock and make sure the student understands the Class time will start now: “All clear? Can we start the lesson?”
 
-
-After Lesson reception
-   1. Feedback: Assess client satisfaction, exhaustion, comfort and expectations.
-   2. Scheduling: Check availability for next days and schedule accordingly
-   3. Gear Check: Check for any visible damage on the gear
-   4. Storage: Check all gear has arrived and stored properly in the right bags.
+# After Lesson reception
+. Assess client satisfaction, exhaustion, comfort and expectations.
+. Check availability for next days and schedule accordingly
+. Check for any visible damage on the gear
+. Check all gear has arrived and stored properly in the right bags.
 
 
 LESSON 1 (Kite control)
@@ -411,40 +396,47 @@ export function parseManualText(rawText) {
       if (bulletMatch) {
         const text = bulletMatch[2];
         const extracted = extractItemType(text);
-        const isSubtitleText = extracted.text.toUpperCase() === 'GUSTYKITE' || extracted.text.toUpperCase() === 'PLANNER';
+        const isSubtitleText = extracted.text.toUpperCase() === 'GUSTYKITE' || 
+                               extracted.text.toUpperCase() === 'PLANNER' || 
+                               extracted.text.startsWith('#');
         
         // Inside lessons, a bullet is only considered a main exercise card if it has a duration (e.g. 10min) or ends with a colon
         const isExerciseTitle = !section.isLesson || text.match(/\d+\s*min/i) || text.trim().endsWith(':');
 
         if (isExerciseTitle) {
           // Threshold: if indented by baselineIndent + 2 or more spaces, it's a sub-item
-          // A bullet is a sub-item only if it is indented further than the parent checkable item
+          // BUT if the current item is a subtitle, we do NOT group under it
           const isSub = currentItem && currentItem.type !== 'subtitle' && leadingSpaces > (currentItem.indent || 0);
           const itemType = isSubtitleText ? 'subtitle' : extracted.type;
+          const cleanText = extracted.text.replace(/^#\s*/, '');
 
           if (isSub) {
-            currentItem.subItems.push(extracted);
+            currentItem.subItems.push({ ...extracted, text: cleanText });
           } else {
-            currentItem = { text: extracted.text, type: itemType, subItems: [], indent: leadingSpaces };
+            currentItem = { text: cleanText, type: itemType, subItems: [], indent: leadingSpaces };
             section.items.push(currentItem);
           }
         } else {
           // Bulleted description lines are treated as sub-items under the active exercise
           const isSub = currentItem && currentItem.type !== 'subtitle';
+          const cleanText = extracted.text.replace(/^#\s*/, '');
           if (isSub) {
-            currentItem.subItems.push(extracted);
+            currentItem.subItems.push({ ...extracted, text: cleanText });
           } else {
-            section.items.push({ text: extracted.text, type: extracted.type, subItems: [] });
+            section.items.push({ text: cleanText, type: extracted.type, subItems: [] });
           }
         }
       } else {
         // Regular line (no bullet marker)
         const isRoot = leadingSpaces <= baselineIndent;
         const isNotePrefix = trimmed.match(/^(Tip|Note|Warning|Caution|Trick):\s*(.*)$/i);
-        const isSubtitleText = trimmed.toUpperCase() === 'GUSTYKITE' || trimmed.toUpperCase() === 'PLANNER';
+        const isSubtitleText = trimmed.toUpperCase() === 'GUSTYKITE' || 
+                               trimmed.toUpperCase() === 'PLANNER' || 
+                               trimmed.startsWith('#');
 
-        if (isRoot && isSubtitleText) {
-          currentItem = { text: trimmed, type: 'subtitle', subItems: [], indent: leadingSpaces };
+        if ((isRoot || trimmed.startsWith('#')) && isSubtitleText) {
+          const cleanSubtitle = trimmed.replace(/^#\s*/, '');
+          currentItem = { text: cleanSubtitle, type: 'subtitle', subItems: [], indent: leadingSpaces };
           section.items.push(currentItem);
         } else if (isRoot && isNotePrefix) {
           const extracted = extractItemType(trimmed);
