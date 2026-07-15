@@ -39,9 +39,9 @@ Note: 1 or 2 weeks before, an automatic email is sent by the booking system with
 
 
 PLANNER
-* contacts the client to schedule the lesson, confirm location and warn about Payment, Waiver and arriving 15 min. ahead;
-* 2 or 3 days before: Approve, Reschedule or Decline lesson
-* Define Instructor and Remarks (notes & gear)
+* When booking arrives: Contact the client to schedule the lesson, confirm location and warn about Payment, Waiver and arriving 15 min. ahead;
+* 2 or 3 days before: Approve, Reschedule or Decline lesson on the system
+* 1 or 2 days before: Define Instructor and Remarks (notes & gear) on the system
 
 
 URGENT BOOKING 
@@ -418,14 +418,14 @@ export function parseManualText(rawText) {
 
         if (isExerciseTitle) {
           // Threshold: if indented by baselineIndent + 2 or more spaces, it's a sub-item
-          // BUT if the current item is a subtitle, we do NOT group under it
-          const isSub = leadingSpaces >= baselineIndent + 2 && currentItem && currentItem.type !== 'subtitle';
+          // A bullet is a sub-item only if it is indented further than the parent checkable item
+          const isSub = currentItem && currentItem.type !== 'subtitle' && leadingSpaces > (currentItem.indent || 0);
           const itemType = isSubtitleText ? 'subtitle' : extracted.type;
 
           if (isSub) {
             currentItem.subItems.push(extracted);
           } else {
-            currentItem = { text: extracted.text, type: itemType, subItems: [] };
+            currentItem = { text: extracted.text, type: itemType, subItems: [], indent: leadingSpaces };
             section.items.push(currentItem);
           }
         } else {
@@ -444,11 +444,11 @@ export function parseManualText(rawText) {
         const isSubtitleText = trimmed.toUpperCase() === 'GUSTYKITE' || trimmed.toUpperCase() === 'PLANNER';
 
         if (isRoot && isSubtitleText) {
-          currentItem = { text: trimmed, type: 'subtitle', subItems: [] };
+          currentItem = { text: trimmed, type: 'subtitle', subItems: [], indent: leadingSpaces };
           section.items.push(currentItem);
         } else if (isRoot && isNotePrefix) {
           const extracted = extractItemType(trimmed);
-          currentItem = { text: extracted.text, type: extracted.type, subItems: [] };
+          currentItem = { text: extracted.text, type: extracted.type, subItems: [], indent: leadingSpaces };
           section.items.push(currentItem);
         } else if (currentItem && currentItem.type !== 'subtitle') {
           const extracted = extractItemType(trimmed);
