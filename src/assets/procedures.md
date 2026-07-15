@@ -1,3 +1,27 @@
+<!--
+FORMATTING LEGEND:
+Use the following symbols to format the procedures. The app will automatically parse them:
+
+1. `# SECTION NAME` (e.g. `# GENERAL GUIDELINES`, `# RECEPTION`, `# LESSON 1 (Kite control)`)
+   - Creates a main navigation section/tab in the sidebar.
+
+2. `## Heading Name [duration]` (e.g. `## General lesson setup 10min`, `## Spot Assessment 10min`)
+   - Creates a bold exercise title heading with an orange accent line and a duration badge on the right.
+
+3. `- Checklist item` or `* Checklist item` (e.g. `- check Wind speed/direction.`)
+   - Creates a card with a checkbox.
+   - For sub-bullets nested inside a card, indent them with 2 spaces (e.g. `  - Wetsuit`).
+
+4. Callout Cards (no checkboxes, styled as colored info boxes):
+   - `Warning: text` -> Red card with warning icon (⚠️)
+   - `Note: text`    -> Orange card with info icon (ℹ️)
+   - `Tip: text`     -> Indigo card with lightbulb icon (💡)
+
+5. `00h00` (e.g. `00h10`, `01h25`)
+   - Must be on its own line below a checkbox card.
+   - Renders a clean time checkpoint pill below that card.
+-->
+
 # GENERAL GUIDELINES
 - Must always bring full work equipment (polo shirt, wetsuit, harness and team lycra). Wear the GUSTYKITE polo or lycra on, and take everything back home with you.
 - Must always wear a wetsuit except for the first lesson.
