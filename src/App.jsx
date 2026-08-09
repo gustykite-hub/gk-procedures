@@ -26,6 +26,7 @@ export default function App() {
   } = useProgress();
 
   const [currentSectionId, setCurrentSectionId] = useState('pre-arriving');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [debugTab, setDebugTab] = useState('inspector'); // 'inspector' | 'raw'
   const [isUnlocked, setIsUnlocked] = useState(() => {
     return sessionStorage.getItem('gustykite_debug_unlocked') === 'true';
@@ -41,6 +42,7 @@ export default function App() {
     if (mainContentRef.current) {
       mainContentRef.current.scrollTo(0, 0);
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSectionId]);
 
   // Helper for icons
@@ -78,6 +80,24 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Mobile Sticky Navigation Top Bar */}
+      <header className="mobile-top-header">
+        <button 
+          className="btn-mobile-menu" 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle Navigation Menu"
+        >
+          {renderIcon(mobileMenuOpen ? 'X' : 'Menu', 'w-6 h-6')}
+        </button>
+        <div className="mobile-brand">
+          {renderIcon('Compass', 'w-6 h-6')}
+          Gusty<span>Kite</span>
+        </div>
+        <div className="mobile-section-badge">
+          {currentSectionId === 'changelog' ? 'Changelog' : currentSectionId === 'debug' ? 'Debug' : currentSection?.title || 'Menu'}
+        </div>
+      </header>
+
       {/* Sidebar Panel */}
       <Sidebar
         manualData={manualData}
@@ -90,6 +110,8 @@ export default function App() {
         checkDocUpdates={checkDocUpdates}
         onDebugClick={handleDebugNavigation}
         onClearCache={clearLocalCache}
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
       />
 
       {/* Main Panel */}
