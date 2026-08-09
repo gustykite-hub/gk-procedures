@@ -742,8 +742,8 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 992px) {
+/* Mobile & Responsive Small Window Layout */
+@media (max-width: 1024px) {
   html, body {
     height: auto;
     overflow-x: hidden;

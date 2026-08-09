@@ -41,6 +41,11 @@ export default function App() {
   useEffect(() => {
     if (mainContentRef.current) {
       mainContentRef.current.scrollTo(0, 0);
+      try {
+        mainContentRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {
+        // Fallback for browsers with strict scrollIntoView options
+      }
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSectionId]);
